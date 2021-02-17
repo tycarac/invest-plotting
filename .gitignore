@@ -3,6 +3,10 @@
 # https://github.com/github/gitignore/blob/master/Python.gitignore
 
 # _____________________________________________________________________________
+# Project specific
+plots/
+
+# _____________________________________________________________________________
 # Build files
 *.bak
 *.bak.*
