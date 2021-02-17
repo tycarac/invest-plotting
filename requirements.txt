@@ -1,0 +1,6 @@
+jsonschema
+numpy
+pandas
+plotly
+python-dateutil
+urllib3[secure]
