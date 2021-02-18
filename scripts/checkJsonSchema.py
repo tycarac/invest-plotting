@@ -22,8 +22,11 @@ FIXED_PLACES = Decimal('.0001')
 def process():
     _logger.debug('process')
 
-    config_path = Path('..\\plot\\plots.config.json').resolve()
-    schema_path = Path('..\\plot\\plots.schema.json').resolve()
+    config_path = Path(r'..\plotter\plots.config.json').resolve()
+    schema_path = Path(r'..\plotter\plots.schema.json').resolve()
+    _logger.info(f'Config file: "{config_path}"')
+    _logger.info(f'Schema file: "{schema_path}"')
+
     try:
         json_config = json.loads(config_path.read_text())
     except json.JSONDecodeError as ex:
@@ -37,9 +40,9 @@ def process():
 
     try:
         js.validate(instance=json_config, schema=json_schema)
+        _logger.info(f'Validation passed')
     except js.ValidationError as ex:
         _logger.exception(f'Schema error: "{ex}')
-        raise
 
 
 # _____________________________________________________________________________
