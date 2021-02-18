@@ -5,7 +5,6 @@ Output 3 columns: date, redemption, and redemption adjusted
 from datetime import date, datetime
 import logging
 import csv
-from datetime import datetime
 from decimal import Decimal
 from pathlib import Path
 from dateutil import parser

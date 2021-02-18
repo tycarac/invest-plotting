@@ -8,6 +8,7 @@ import csv
 import logging
 from pathlib import Path
 import re
+from dateutil import parser
 
 re_date = re.compile(r'(20[\d]{6})')
 re_price = re.compile(r'(\d+(?:\.\d+))')
@@ -47,10 +48,11 @@ _logger.info(f'Reading "{inp_path.name}"')
 with inp_path.open(mode='r', newline='') as fp:
     for line in strip_line(fp):
         if match_date := re_date.match(line):
+            date = parser.parse(line, dayfirst=False)
             if len(row) > 1:
                 rows.append(row)
                 row = list()
-            row.append(f'{line[0:4]}-{line[4:6]}-{line[6:8]}')
+            row.append(date)
         elif match_price := re_price.match(line):
             row.append(line)
     if len(row) > 1:
@@ -64,4 +66,4 @@ with out_filename.open(mode='wt', newline='') as out:
     csv_writer = csv.writer(out, quoting=csv.QUOTE_MINIMAL)
     csv_writer.writerow(['Date', 'Exit'])
     for row in rows:
-        csv_writer.writerow([row[0], row[2]])
+        csv_writer.writerow([f'{row[0]:%d-%m-%Y}', row[2]])
