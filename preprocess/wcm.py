@@ -5,12 +5,12 @@ Prices are provided in PDF files.  To extract unit prices:
 2. Run python script over text file to create csv file.
 """
 import csv
+from dateutil import parser
 import logging
 from pathlib import Path
 import re
-from dateutil import parser
 
-re_date = re.compile(r'(\d{1,2})/(\d{1,2})/(20\d{2})')
+re_date = re.compile(r'(\d{1,2}/\d{1,2}/20\d{2})')
 re_price = re.compile(r'(\d+(?:\.\d+))')
 
 _logger = logging.getLogger(__name__)
@@ -47,14 +47,13 @@ row, rows = list(), list()
 _logger.info(f'Reading "{inp_path.name}"')
 with inp_path.open(mode='r', newline='') as fp:
     for line in strip_line(fp):
-        if match_date := re_date.match(line):
-            date = parser.parse(row[0], dayfirst=True)
+        if match_price := re_price.match(line):
+            row.append(match_price[1])
+        elif match_date := re_date.match(line):
             if len(row) > 1:
                 rows.append(row)
             row = list()
-            row.append(date)
-        elif match_price := re_price.match(line):
-            row.append(line)
+            row.append(parser.parse(match_date[1], dayfirst=True))
     if len(row) > 1:
         rows.append(row)
 rows.sort(key=lambda x: x[0], reverse=True)
