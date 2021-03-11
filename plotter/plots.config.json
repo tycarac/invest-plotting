@@ -1,92 +1,48 @@
 {
-	"plots": [
-		{
-			"output": {
-				"filename": "arkk-top"
-			},
-			"input": {
-				"yahooCodes": [
-					"TSLA",
-					"ROKU",
-					"CRSP",
-					"TDOC",
-					"SQ"
-				]
-			},
-			"views": [
-				{
-					"startDate": "2020-01-01"
-				},
-				{
-					"startDate": "2020-07-01"
-				}
-			]
-		},
-		{
-			"output": {
-				"filename": "rf1"
-			},
-			"input": {
-				"yahooCodes": [
-					"RF1.AX"
-				]
-			},
-			"views": [
-				{
-					"startDate": "2020-01-01"
-				},
-				{
-					"startDate": "2020-07-01"
-				}
-			]
-		},
-		{
-			"output": {
-				"filename": "ellerston-microcap"
-			},
-			"input": {
-				"filenames": [
-					{
-						"filename": "Ellerston - Australian Microcap",
-						"fields": {
-							"RED": "Price",
-							"DATE": "Date"
-						}
-					}
-				]
-			},
-			"views": [
-				{
-					"startDate": "2020-01-01"
-				},
-				{
-					"startDate": "2020-07-01"
-				}
-			]
-		},
-		{
-			"output": {
-				"filename": "ellerston-microcap"
-			},
-			"input": {
-				"filenames": [
-					{
-						"filename": "Ellerston - Australian Microcap",
-						"fields": {
-							"RED": "Price",
-							"DATE": "Date"
-						}
-					}
-				]
-			},
-			"views": [
-				{
-					"startDate": "2020-01-01"
-				},
-				{
-					"startDate": "2020-07-01"
-				}
-			]
-		}
-	]
+  "plots": [
+    {
+      "output": {
+        "filename": "arkk-top-year.html"
+      },
+      "data": {
+        "csvYahooCodes": [
+          "TSLA",
+          "ROKU",
+          "CRSP",
+          "TDOC",
+          "SQ"
+        ]
+      },
+      "views": [
+        {
+          "startDate": "2021-01-01"
+        },
+        {
+          "startDate": "2020-07-01"
+        },
+        {
+        }
+      ]
+    },
+    {
+      "output": {
+        "filename": "rf1.html"
+      },
+      "data": {
+        "csvYahooCodes": [
+          "RF1.AX"
+        ]
+      },
+      "views": [
+        {
+          "startDate": "2021-01-01"
+        },
+        {
+          "startDate": "2020-07-01"
+        },
+        {
+        }
+      ]
+    }
+  ]
 }

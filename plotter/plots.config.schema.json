@@ -1,0 +1,75 @@
+{
+  "$id": "https://thystra.com/investing/charts/v1.0",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Root",
+  "type": "object",
+  "required": [
+    "plots"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "plots": {
+      "$ref": "#/definitions/plotsType"
+    }
+  },
+  "definitions": {
+    "plotsType": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "$ref": "#/definitions/plotType"
+      }
+    },
+    "plotType": {
+      "additionalProperties": false,
+      "properties": {
+        "output": {
+          "$ref": "#/definitions/outputType"
+        },
+        "data": {
+          "$ref": "#/definitions/inputsType"
+        },
+        "views": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/viewType"
+          }
+        }
+      },
+      "required": [
+        "data", "output", "views"
+      ]
+    },
+    "filepathType": {
+      "type": "string"
+    },
+    "inputsType": {
+      "additionalProperties": false,
+      "properties": {
+        "csvYahooCodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "outputType": {
+      "additionalProperties": false,
+      "properties": {
+        "filename": {
+          "$ref": "#/definitions/filepathType"
+        }
+      }
+    },
+    "viewType": {
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {
+        "startDate": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
