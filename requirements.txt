@@ -1,6 +1,11 @@
-jsonschema
 numpy
 pandas
 plotly
 python-dateutil
 urllib3[secure]
+
+# JSON schema plus select validators
+jsonschema
+jsonpointer
+strict-rfc3339
+rfc3987

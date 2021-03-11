@@ -1,75 +1,108 @@
 {
-  "$id": "https://thystra.com/investing/charts/v1.0",
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Root",
-  "type": "object",
-  "required": [
-    "plots"
-  ],
-  "additionalProperties": false,
-  "properties": {
-    "plots": {
-      "$ref": "#/definitions/plotsType"
-    }
-  },
-  "definitions": {
-    "plotsType": {
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "$ref": "#/definitions/plotType"
-      }
-    },
-    "plotType": {
-      "additionalProperties": false,
-      "properties": {
-        "output": {
-          "$ref": "#/definitions/outputType"
-        },
-        "data": {
-          "$ref": "#/definitions/inputsType"
-        },
-        "views": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/viewType"
-          }
-        }
-      },
-      "required": [
-        "data", "output", "views"
-      ]
-    },
-    "filepathType": {
-      "type": "string"
-    },
-    "inputsType": {
-      "additionalProperties": false,
-      "properties": {
-        "csvYahooCodes": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "outputType": {
-      "additionalProperties": false,
-      "properties": {
-        "filename": {
-          "$ref": "#/definitions/filepathType"
-        }
-      }
-    },
-    "viewType": {
-      "additionalProperties": false,
-      "type": "object",
-      "properties": {
-        "startDate": {
-          "type": "string"
-        }
-      }
-    }
-  }
+	"$id": "https://thystra.com/investing/charts/v1.0",
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"title": "Plot configuration",
+	"type": "object",
+	"properties": {
+		"plots": {
+			"$ref": "#/definitions/plotsType"
+		}
+	},
+	"additionalProperties": false,
+	"required": [
+		"plots"
+	],
+	"definitions": {
+		"plotsType": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/plotType"
+			},
+			"additionalItems": false
+		},
+		"plotType": {
+			"type": "object",
+			"properties": {
+				"output": {
+					"$ref": "#/definitions/outputType"
+				},
+				"data": {
+					"$ref": "#/definitions/dataType"
+				},
+				"views": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/viewType"
+					},
+					"additionalItems": false
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"data",
+				"output",
+				"views"
+			]
+		},
+		"filepathType": {
+			"type": "string"
+		},
+		"dataType": {
+			"type": "object",
+			"properties": {
+				"csvYahooCodes": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"additionalItems": false
+				},
+				"csvFiles": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/csvFileType"
+					},
+					"additionalItems": false
+				}
+			},
+			"additionalProperties": false
+		},
+		"csvFileType": {
+			"type": "object",
+			"properties": {
+				"filename": {
+					"$ref": "#/definitions/filepathType"
+				},
+				"fields": {
+					"properties": {
+					},
+					"additionalProperties": {
+						"type": "string"
+					}
+				}
+			},
+			"additionalProperties": false
+		},
+		"outputType": {
+			"type": "object",
+			"properties": {
+				"filename": {
+					"$ref": "#/definitions/filepathType"
+				}
+			},
+			"additionalProperties": false
+		},
+		"viewType": {
+			"type": "object",
+			"properties": {
+				"startDate": {
+					"type": "string"
+				},
+				"title": {
+					"type": "string"
+				}
+			},
+			"additionalProperties": false
+		}
+	}
 }
