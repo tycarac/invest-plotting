@@ -55,8 +55,8 @@
 					{
 						"filename": "Ellerston - Australian Microcap.csv",
 						"fields": {
-							"RED": "Price",
-							"DATE": "Date"
+							"Price": "REM",
+							"Date": "DATE"
 						}
 					}
 				]
