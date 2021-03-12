@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from dateutil import parser
 import json
 import jsonschema as js
@@ -9,10 +10,34 @@ _logger = logging.getLogger(__name__)
 
 
 # _____________________________________________________________________________
-class ConfigPlotView:
-    """Holder for configuration view
-    """
+@dataclass
+class ConfigCsvFile:
+    # _____________________________________________________________________________
+    def __init__(self, item, idx: int):
+        self._idx = idx
+        self._code = item.get('code', '')
+        self._filename = item.get('filename')
+        self._fields = item.get('fields', {})
 
+    # _____________________________________________________________________________
+    @property
+    def code(self):
+        return self._code
+
+    # _____________________________________________________________________________
+    @property
+    def filename(self):
+        return self._filename
+
+    # _____________________________________________________________________________
+    @property
+    def fields(self):
+        return self._fields
+
+
+# _____________________________________________________________________________
+@dataclass
+class ConfigPlotView:
     # _____________________________________________________________________________
     def __init__(self, item, idx: int):
         self._idx = idx
@@ -33,10 +58,8 @@ class ConfigPlotView:
 
 
 # _____________________________________________________________________________
+@dataclass
 class ConfigPlot:
-    """Holder for configuration data
-    """
-
     # _____________________________________________________________________________
     def __init__(self, item, idx: int):
         """
@@ -44,14 +67,21 @@ class ConfigPlot:
         to exist being validated by JSON schema.
         """
         self._idx = idx
-        self._csv_yahoo_codes = item['data'].get('csvYahooCodes', [])
+        data = item['data']
+        self._csv_yahoo_codes = data.get('csvYahooCodes', [])
+        self._csv_files = [ConfigCsvFile(x, i) for i, x in enumerate(data.get('csvFiles'))] if 'csvFiles' in data else []
         self._output_filename = item['output']['filename']
         self._views = [ConfigPlotView(x, i) for i, x in enumerate(item['views'])]
 
     # _____________________________________________________________________________
     @property
-    def input_csv_yahoo_codes(self):
+    def data_csv_yahoo_codes(self):
         return self._csv_yahoo_codes
+
+    # _____________________________________________________________________________
+    @property
+    def data_csv_files(self):
+        return self._csv_files
 
     # _____________________________________________________________________________
     @property
@@ -66,7 +96,6 @@ class ConfigPlot:
 
 # _____________________________________________________________________________
 class ConfigParser:
-
     # _____________________________________________________________________________
     @staticmethod
     def parse(path: PathLike) -> list[ConfigPlot]:
@@ -80,7 +109,9 @@ class ConfigParser:
         except json.JSONDecodeError as ex:
             _logger.exception(f'Error in: "{filename.name}" at {ex.lineno}:{ex.colno}')
             raise
+        except js.SchemaError as ex:
+            _logger.exception(f'Schema error in: "{filename.name}" {ex.message}')
         except js.ValidationError as ex:
-            _logger.exception(f'Error in: "{filename.name}" {ex.message}')
+            _logger.exception(f'Validation error in: "{filename.name}" {ex.message}')
             raise
         return entries

@@ -1,74 +1,74 @@
 {
-	"plots": [
+  "plots": [
+    {
+      "output": {
+        "filename": "ellerston-microcap.html"
+      },
+      "data": {
+        "csvFiles": [
+          {
+            "code": "EAMF",
+            "filename": "ellerston-AMC.csv",
+            "fields": {
+              "Exit" : "Exit"
+            }
+          }
+        ]
+      },
+      "views": [
+        {
+          "startDate": "2020-01-01"
+        },
+        {
+          "startDate": "2020-07-01"
+        }
+      ]
+    },
 		{
-			"output": {
-				"filename": "arkk-top-year.html"
-			},
-			"data": {
-				"csvYahooCodes": [
-					"TSLA",
-					"ROKU",
-					"CRSP",
-					"TDOC",
-					"SQ"
-				]
-			},
-			"views": [
-				{
-					"startDate": "2021-01-01"
-				},
-				{
-					"startDate": "2020-07-01"
-				},
-				{
-					"title": "All available"
-				}
-			]
-		},
-		{
-			"output": {
-				"filename": "rf1.html"
-			},
-			"data": {
-				"csvYahooCodes": [
-					"RF1.AX"
-				]
-			},
-			"views": [
-				{
-					"startDate": "2021-01-01"
-				},
-				{
-					"startDate": "2020-07-01"
-				},
-				{
-					"title": "All available"
-				}
-			]
-		},
-		{
-			"output": {
-				"filename": "ellerston-microcap.html"
-			},
-			"data": {
-				"csvFiles": [
-					{
-						"filename": "Ellerston - Australian Microcap.csv",
-						"fields": {
-							"Price": "REM",
-							"Date": "DATE"
-						}
-					}
-				]
-			},
-			"views": [
-				{
-					"startDate": "2020-01-01"
-				},
-				{
-					"startDate": "2020-07-01"
-				}
-			]
-		}
-	]
+      "data": {
+        "csvYahooCodes": [
+          "TSLA",
+          "ROKU",
+          "CRSP",
+          "TDOC",
+          "SQ"
+        ]
+      },
+      "output": {
+        "filename": "arkk-top-year.html"
+      },
+      "views": [
+        {
+          "startDate": "2021-01-01"
+        },
+        {
+          "startDate": "2020-07-01"
+        },
+        {
+          "title": "All available"
+        }
+      ]
+    },
+    {
+      "output": {
+        "filename": "rf1.html"
+      },
+      "data": {
+        "csvYahooCodes": [
+          "RF1.AX"
+        ]
+      },
+      "views": [
+        {
+          "startDate": "2021-01-01"
+        },
+        {
+          "startDate": "2020-07-01"
+        },
+        {
+          "title": "All available"
+        }
+      ]
+    }
+  ]
 }

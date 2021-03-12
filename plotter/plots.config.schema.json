@@ -70,6 +70,9 @@
 		"csvFileType": {
 			"type": "object",
 			"properties": {
+				"code": {
+					"type": "string"
+				},
 				"filename": {
 					"$ref": "#/definitions/filepathType"
 				},
