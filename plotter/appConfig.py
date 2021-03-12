@@ -24,8 +24,10 @@ class AppConfig:
 
         # Folders
         self._data_path = Path(self._base_path, 'data').resolve()
-        self._data_frame_path = Path(self._base_path, 'dataframe').resolve()
-        self._plot_base_path = Path(self._base_path, 'plot').resolve()
+        self._output_path = Path(self._base_path, 'output').resolve()
+        self._base_data_frame_path = Path(self._output_path, 'dataframes').resolve()
+        self._data_frame_path = Path(self._base_data_frame_path, date.today().strftime("%y-%m-%d")).resolve()
+        self._plot_base_path = Path(self._output_path, 'plots').resolve()
         self._plot_path = Path(self._plot_base_path, date.today().strftime("%y-%m-%d")).resolve()
 
         # Ensure directories pre-exist
@@ -52,11 +54,6 @@ class AppConfig:
     @property
     def data_frame_path(self):
         return self._data_frame_path
-
-    # _____________________________________________________________________________
-    @property
-    def plot_base_path(self):
-        return self._plot_base_path
 
     # _____________________________________________________________________________
     @property

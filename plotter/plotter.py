@@ -26,20 +26,6 @@ FIXED_PLACES = Decimal('.0001')
 
 
 # _____________________________________________________________________________
-def to_html(title: str, plot_div: str) -> str:
-    with StringIO() as buf:
-        buf.write('<!DOCTYPE HTML>\n<html>\n<head>\n')
-        buf.write('  <meta charset="utf-8">\n')
-        # buf.write('  <meta name="viewport" content="width=device-width, initial-scale=1">\n')
-        buf.write('  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>\n')
-        buf.write(f'  <title>{title}</title>\n')
-        buf.write('</head>\n<body>\n')
-        buf.write(plot_div)
-        buf.write('\n</body>\n</html>\n')
-        return buf.getvalue()
-
-
-# _____________________________________________________________________________
 def plot_chart(df: pd.DataFrame, config_views: list[ConfigPlotView], output_filepath):
     _logger.debug('plot_chart')
 
@@ -67,9 +53,11 @@ def process(app_config: AppConfig):
     _logger.debug('process')
 
     for i, plot_config in enumerate(app_config.plot_configs):
-        df = load_plot_data(plot_config, app_config)
         output_filepath = Path(app_config.plot_path, plot_config.output_filename)
-        df.to_csv(output_filepath.with_suffix('.csv'))
+        data_frame_filepath = Path(app_config.data_frame_path, plot_config.output_filename).with_suffix('.csv')
+
+        df = load_plot_data(plot_config, app_config)
+        df.to_csv(data_frame_filepath)
         plot_chart(df, plot_config.views, output_filepath)
 
 
