@@ -52,14 +52,14 @@ def plot_chart(df: pd.DataFrame, config_views: list[ConfigPlotView], output_file
         dff = df.loc[cv.start_date:] if cv.start_date else df
         for j, col in enumerate(df.columns):
             color = colors[j % len(colors)]
-            fig.add_trace(go.Scatter(name=col,
-                                     x=dff.index, y=dff[col],
+            fig.add_trace(go.Scatter(name=col, x=dff.index, y=dff[col],
                                      mode='lines', line={'color': color}),
                           row=i, col=1)
 
     # Save to file
     _logger.debug(f'Write chart: "{output_filepath}"')
-    py.io.write_html(fig, str(output_filepath), include_plotlyjs='directory', full_html=True)
+    py.io.write_html(fig, str(output_filepath),
+                     include_plotlyjs='directory', full_html=True, config={'displaylogo': False})
 
 
 # _____________________________________________________________________________
