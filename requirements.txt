@@ -2,10 +2,12 @@ numpy
 pandas
 plotly
 python-dateutil
+PyYAML
 urllib3[secure]
 
 # JSON schema plus select validators
 jsonschema
 jsonpointer
+pdfminer.six
 strict-rfc3339
 rfc3987

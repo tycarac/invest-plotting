@@ -6,7 +6,7 @@ from configParser import ConfigParser, ConfigPlot
 
 # Common variables
 _logger = logging.getLogger(__name__)
-_PLOTS_CONFIG_FILENAME = 'plots.config.json'
+_PLOTS_CONFIG_FILENAME = 'plots.config.yaml'
 
 
 # _____________________________________________________________________________

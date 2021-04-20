@@ -17,16 +17,9 @@ def load_plot_data(config_plot: ConfigPlot, app_config: AppConfig) -> pd.DataFra
     _logger.debug('load_plot_data')
 
     data_sources, df = [], None
-    if config_plot.data_csv_yahoo_codes:
-        for code in config_plot.data_csv_yahoo_codes:
-            fields = {code: 'Adj Close'}
-            filepath = Path(app_config.data_path, f'{code}.csv')
-            data_sources.append(DataSource(code, filepath, fields))
-
-    if config_plot.data_csv_files:
-        for cf in config_plot.data_csv_files:
-            filepath = Path(app_config.data_path, cf.filename)
-            data_sources.append(DataSource(cf.code, filepath, cf.fields))
+    for cf in config_plot.csv_files:
+        filepath = Path(app_config.data_path, cf.filename)
+        data_sources.append(DataSource(cf.code, filepath, cf.fields))
 
     if data_sources:
         parser = CsvParser()

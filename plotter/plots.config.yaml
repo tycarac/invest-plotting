@@ -1,0 +1,49 @@
+---
+plots:
+# _____________________________________________________________________________
+  - tag: Ellerston
+    output:
+      filename: ellerston-microcap.html
+    csvFiles:
+      - byFile:
+          filename: ellerston-AMC.csv
+          code: EAMF
+          fields:
+            Exit: Exit
+    views:
+      - startDate: '2020-01-01'
+      - startDate: '2020-07-01'
+# _____________________________________________________________________________
+  - tag: ARK
+    output:
+      filename: arkk-top-year.html
+    csvFiles:
+      - byCodes:
+          yahooCodes:
+            - TSLA
+            - ROKU
+            - CRSP
+            - TDOC
+            - SQ
+          fields:
+            Exit: Adj Close
+    views:
+      - startDate: '2021-01-01'
+      - startDate: '2020-07-01'
+        title: Financial Year
+      - title: All available
+# _____________________________________________________________________________
+  - tag: RF1
+    output:
+      filename: rf1.html
+    csvFiles:
+      - byCodes:
+          yahooCodes:
+            - RF1.AX
+          fields:
+            Exit: Adj Close
+    views:
+      - startDate: '2021-01-01'
+      - startDate: '2020-07-01'
+        title: Financial Year
+      - title: All available

@@ -1,0 +1,104 @@
+---
+"$id": https://thystra.com/investing/charts/v1.0
+"$schema": http://json-schema.org/draft-07/schema#
+title: Plot configuration
+type: object
+properties:
+  plots:
+    type: array
+    items:
+      "$ref": "#/definitions/plotType"
+    additionalItems: false
+additionalProperties: false
+required:
+  - plots
+
+# =============================================================================
+definitions:
+  # _____________________________________________________________________________
+  plotType:
+    type: object
+    properties:
+      tag:
+        type: string
+      output:
+        "$ref": "#/definitions/outputType"
+      csvFiles:
+        type: array
+        items:
+          properties:
+            byFile:
+              "$ref": "#/definitions/byFileType"
+            byCodes:
+              "$ref": "#/definitions/byCodesType"
+          additionalProperties: false
+        minItems: 1
+      views:
+        type: array
+        items:
+          "$ref": "#/definitions/viewType"
+        additionalItems: false
+        minItems: 1
+    additionalProperties: false
+    required:
+      - output
+      - views
+
+  # _____________________________________________________________________________
+  outputType:
+    type: object
+    properties:
+      filename:
+        "$ref": "#/definitions/filepathType"
+    additionalProperties: false
+
+  # _____________________________________________________________________________
+  byFileType:
+    type: object
+    properties:
+      filename:
+        "$ref": "#/definitions/filepathType"
+      code:
+        type: string
+      fields:
+        "$ref": "#/definitions/fieldsType"
+    additionalProperties: false
+    required:
+      - filename
+
+  # _____________________________________________________________________________
+  byCodesType:
+    type: object
+    properties:
+      yahooCodes:
+        type: array
+        additionalItems:
+          type: string
+        minItems: 1
+      fields:
+        "$ref": "#/definitions/fieldsType"
+    additionalProperties: false
+
+  # _____________________________________________________________________________
+  viewType:
+    type: object
+    properties:
+      startDate:
+        type: string
+      title:
+        type: string
+    additionalProperties: false
+
+  # =============================================================================
+  # Primitives
+
+  # File path
+  filepathType:
+    type: string
+
+  # Fields
+  fieldsType:
+    type: object
+    additionalProperties:
+      type: string
+    minproperties: 1

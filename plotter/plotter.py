@@ -53,8 +53,8 @@ def process(app_config: AppConfig):
     _logger.debug('process')
 
     for i, plot_config in enumerate(app_config.plot_configs):
-        output_filepath = Path(app_config.plot_path, plot_config.output_filename)
-        data_frame_filepath = Path(app_config.data_frame_path, plot_config.output_filename).with_suffix('.csv')
+        output_filepath = Path(app_config.plot_path, plot_config.filename)
+        data_frame_filepath = Path(app_config.data_frame_path, plot_config.filename).with_suffix('.csv')
 
         df = load_plot_data(plot_config, app_config)
         df.to_csv(data_frame_filepath)
