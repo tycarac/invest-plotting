@@ -62,12 +62,15 @@ class ConfigPlot:
     def __init__(self, item, idx):
         self.idx = idx
         self.tag = item.get('tag', '')
-        self.csv_files = self.__parse_csv_files(item.get('csvFiles')) if 'csvFiles' in item else []
         self.filename = item['output']['filename']
+
+        _logger.debug(f'{self.tag}:{idx} - output "{self.filename}"')
+        self.csv_files = ConfigPlot.__parse_csv_files(item.get('csvFiles'), self.tag) if 'csvFiles' in item else []
         self.views = [ConfigPlotView(x, i) for i, x in enumerate(item['views'])]
 
     # _____________________________________________________________________________
-    def __parse_csv_files(self, item):
+    @staticmethod
+    def __parse_csv_files(item, tag):
         csv_files = []
 
         for i, x in enumerate(item):
@@ -76,12 +79,14 @@ class ConfigPlot:
                 filename = data['filename']
                 code = data.get('code', '')
                 fields = data.get('fields', None)
+                _logger.debug(f'{tag}:{i} - byFile {code} "{filename}"')
                 csv_files.append(ConfigCsvFile(filename, code, fields, i))
             elif 'byCodes' in x:
                 data = x['byCodes']
                 fields = data.get('fields', None)
                 for code in data.get('yahooCodes', []):
                     filename = f'{code}.csv'
+                    _logger.debug(f'{tag}:{i} - byCodes {code} "{filename}"')
                     csv_files.append(ConfigCsvFile(filename, code, fields, i))
 
         return csv_files

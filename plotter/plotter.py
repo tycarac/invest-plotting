@@ -26,7 +26,7 @@ FIXED_PLACES = Decimal('.0001')
 
 
 # _____________________________________________________________________________
-def plot_chart(df: pd.DataFrame, config_views: list[ConfigPlotView], output_filepath):
+def plot_chart(df: pd.DataFrame, tag: str, config_views: list[ConfigPlotView], output_filepath: Path):
     _logger.debug('plot_chart')
 
     colors = py.colors.qualitative.Plotly
@@ -35,8 +35,10 @@ def plot_chart(df: pd.DataFrame, config_views: list[ConfigPlotView], output_file
 
     # Plot
     for i, cv in enumerate(config_views, start=1):
+        _logger.debug(f'{tag}:{i} - title "{cv.title}"')
         dff = df.loc[cv.start_date:] if cv.start_date else df
         for j, col in enumerate(df.columns):
+            _logger.debug(f'{tag}:{i} - column "{col}"')
             color = colors[j % len(colors)]
             fig.add_trace(go.Scatter(name=col, x=dff.index, y=dff[col],
                                      mode='lines', line={'color': color}),
@@ -58,7 +60,7 @@ def process(app_config: AppConfig):
 
         df = load_plot_data(plot_config, app_config)
         df.to_csv(data_frame_filepath)
-        plot_chart(df, plot_config.views, output_filepath)
+        plot_chart(df, plot_config.tag, plot_config.views, output_filepath)
 
 
 # _____________________________________________________________________________

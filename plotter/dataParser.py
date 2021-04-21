@@ -68,8 +68,9 @@ class CsvParser(DataParser):
             for key in fields.keys():
                 if key == 'Date':
                     continue
-                _logger.debug(f'Parsing {ds.code}: column "{key}" <-- "{fields[key]}"')
-                df[key] = dff[fields[key]]
+                df_column_name = ds.code if key == 'Exit' else f'{ds.code}|{key}'
+                _logger.debug(f'Parsing {ds.code}: column "{df_column_name}" <-- "{fields[key]}"')
+                df[df_column_name] = dff[fields[key]]
 
             # Rename index label (if needed)
             if value := fields.get('Date', ''):
