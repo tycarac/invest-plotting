@@ -1,4 +1,4 @@
-"""Transform and filter unit prices for Eley Giffiths funds
+"""Transform and filter unit prices for Spherica funds
 
 Prices are provided in PDF files.  To extract unit prices:
 1. Load PDF and use "File > Save as text ..." to create text file
@@ -17,8 +17,8 @@ from pdfminer.layout import LAParams
 from io import StringIO
 
 
-re_date = re.compile(r'(20[\d]{6})')
-re_price = re.compile(r'(\d+(?:\.\d+))')
+re_date = re.compile(r'([\d]{1,2}-[a-zA-Z]{3}-[\d]{2})')
+re_price = re.compile(r'\$?\s*(\d+(?:\.\d+))')
 
 _logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG,
@@ -28,22 +28,11 @@ logging.getLogger("pdfminer").setLevel(logging.ERROR)
 
 
 # _____________________________________________________________________________
-def lines_iter(iter):
-    with StringIO(iter) as buf:
-        idx = 0
-        while (ln := buf.readline().strip(' \t')) and not ln[0].isdigit():
-            _logger.debug(f'skip ln "{ln.encode("unicode_escape")}"  {idx}')
-
-        while ln:
-            _logger.debug(f'ln "{ln.encode("unicode_escape")}"  {idx}')
-            if ln:
-                if ln[0] == '\n':
-                    idx += 1
-                elif ln[0] == '\f':
-                    idx = 0
-                elif ln[0].isdigit():
-                    yield idx, ln.strip()
-            ln = buf.readline().strip(' \t')
+def strip_line(iterator):
+    for ln in iterator:
+        # Skip lines with no content and not starting with a digit
+        if ln := ln.strip():
+            yield ln
 
 
 # _____________________________________________________________________________
@@ -54,31 +43,28 @@ out_path = Path(base_path, 'output').resolve()
 out_path.mkdir(parents=True, exist_ok=True)
 
 # Ready input
-inp_path = Path(data_path, 'Historical-Unit-Prices-ECF.pdf').resolve()
+inp_path = Path(data_path, 'Spheria_Global_Microcap_UnitPrices-187.txt').resolve()
 if not inp_path.exists():
-    _logger.error(f'File not found "{inp_path}"')
+    _logger.error(f'File not found "{inp_path.name}"')
     exit(1)
 
 # Initialize
-entries = [list() for _ in range(5)]
+row, rows = list(), list()
 
 # Process
 _logger.info(f'Reading "{inp_path.name}"')
-with StringIO() as buf:
-    with open(str(inp_path), 'rb') as fp:
-        extract_text_to_fp(fp, buf, laparams=LAParams(), output_type='text', codec=None)
-        content = buf.getvalue()
-
-# Transform text
-_logger.info(f'Transforming text')
-for idx, line in lines_iter(content):
-    entries[idx].append(line)
-# convert string to dates
-entries[0] = [parser.parse(d, dayfirst=False) for d in entries[0]]
-rows = zip(entries[0], entries[1])
-
-for r in rows:
-    _logger.debug(f'> {r[0]}  {r[1]}')
+with inp_path.open(mode='r', newline='') as fp:
+    for line in strip_line(fp):
+        if match_price := re_price.match(line):
+            row.append(match_price[1])
+        elif match_date := re_date.match(line):
+            if len(row) > 1:
+                rows.append(row)
+            row = list()
+            row.append(parser.parse(match_date[1], dayfirst=True))
+    if len(row) > 1:
+        rows.append(row)
+rows.sort(key=lambda x: x[0], reverse=True)
 
 # Write output
 out_filename = Path(out_path, inp_path.name).with_suffix('.csv')
@@ -86,5 +72,8 @@ _logger.info(f'Writing {out_filename.name}')
 with out_filename.open(mode='wt', newline='') as out:
     csv_writer = csv.writer(out, quoting=csv.QUOTE_MINIMAL)
     csv_writer.writerow(['Date', 'Exit'])
-    for row in rows:
-        csv_writer.writerow([f'{row[0]:%d-%m-%Y}', row[2]])
+    try:
+        for row in rows:
+            csv_writer.writerow([f'{row[0]:%d-%m-%Y}', row[3]])
+    except Exception as ex:
+        _logger.exception(f'row {row}')
